@@ -23,16 +23,16 @@ class Agent:
       sorted_coords = []
       current_coord = coords[0]
       
-      lista = []
+      copy = []
       for _ in coords:
-          lista.append(_)
+          copy.append(_)
 
-      lista.remove(current_coord)
+      copy.remove(current_coord)
     
-      while lista:
-          nearest_coord = min(lista, key=lambda x: self.calculate_distance(current_coord, x))
+      while copy:
+          nearest_coord = min(copy, key=lambda x: self.calculate_distance(current_coord, x))
           sorted_coords.append(nearest_coord)
-          lista.remove(nearest_coord)
+          copy.remove(nearest_coord)
           current_coord = nearest_coord
       
       sorted_coords.insert(0, coords[0])
