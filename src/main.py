@@ -5,12 +5,6 @@ from Agent import Agent
 
 DIRT_COUNT = 6
 
-# board = np.zeros((6, 6))
-# wall_locations = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), # top
-#                   (1, 5), (2, 5), (3, 5), (4, 5), (5, 5),         # right
-#                   (5, 0), (5, 1), (5, 2), (5, 3), (5, 4),         # left
-#                   (1, 0), (2, 0), (3, 0), (4, 0)]                 # botton
-
 # BOARD
 fig, ax = plt.subplots()
 fig.suptitle("Agente Aspirador de Pó Automático (AAPA)")
@@ -27,7 +21,7 @@ def get_random_coordinates():
     x_range = range(1, 5)
     y_range = range(1, 5)
 
-    return random.sample([(x, y) for x in x_range for y in y_range], DIRT_COUNT);
+    return random.sample([[x, y] for x in x_range for y in y_range], DIRT_COUNT);
 
 def draw_flor():
     rows = []
@@ -53,7 +47,7 @@ def draw_dirt():
     for pos in dirt_positions:
         ax.plot(pos[0], pos[1], markersize=91, marker='s', color='y', ls='')
 
-agent_sra = Agent(dirt_positions, DIRT_COUNT)
+agent_sra = Agent(dirt_positions, DIRT_COUNT, False)
 
 while True:
     draw_walls()
@@ -63,31 +57,20 @@ while True:
     plt.show(block=False)
     plt.pause(0.5)
 
-    agent_sra.update()
-
     for dirt_position in dirt_positions:
         if (agent_sra.pos_x == dirt_position[0] and agent_sra.pos_y == dirt_position[1]):
+            draw_walls()
+            draw_flor()
+            draw_dirt()
+            agent_sra.draw(ax)
+            plt.show(block=False)
+            plt.pause(0.5)
             dirt_positions.remove(dirt_position)
+            agent_sra.clean()
             break
+    
+    agent_sra.update()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# if __name__ == "__main__":
-#     pass
+    if (len(dirt_positions) == 0):
+        print("Score: ", agent_sra.score)
+        break
